@@ -1,20 +1,8 @@
 const allowedCors = [
-  'http://sdv.nomoredomains.sbs',
-  'https://sdv.nomoredomains.sbs',
-  'http://sdv.nomoredomains.sbs/cards',
-  'https://sdv.nomoredomains.sbs/cards',
-  'http://sdv.nomoredomains.sbs/users/me',
-  'https://sdv.nomoredomains.sbs/users/me',
   'http://api.sdv.nomoredomains.sbs',
   'https://api.sdv.nomoredomains.sbs',
-  'http://api.sdv.nomoredomains.sbs/cards',
-  'https://api.sdv.nomoredomains.sbs/cards',
-  'http://api.sdv.nomoredomains.sbs/users/me',
-  'https://api.sdv.nomoredomains.sbs/users/me',
   'http://localhost:3000',
-  'https://localhost:3000',
   'http://localhost:3001',
-  'https://localhost:3001',
 ];
 
 // eslint-disable-next-line consistent-return

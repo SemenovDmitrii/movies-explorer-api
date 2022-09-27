@@ -14,9 +14,7 @@ const router = require('./routes/index');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect(MONGO_URL, {
-  useNewUrlParser: true,
-});
+mongoose.connect(MONGO_URL);
 
 app.use(requestLogger);
 app.use(limiter);
