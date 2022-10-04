@@ -1,8 +1,18 @@
-const { Joi, celebrate } = require('celebrate');
+const { celebrate, Joi } = require('celebrate');
+const isIRL = require('validator/lib/isURL');
+const BadRequestError = require('../errors/BadRequestError');
+
+const urlValidator = (url) => {
+  const validity = isIRL(url);
+  if (!validity) {
+    throw new BadRequestError('Некорректная ссылка');
+  }
+  return url;
+};
 
 const createUserValidator = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(30).required(),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
@@ -10,15 +20,14 @@ const createUserValidator = celebrate({
 
 const loginValidator = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    email: Joi.string().email().required(),
+    email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
 });
 
 const updateUserValidator = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(30).required(),
     email: Joi.string().email().required(),
   }),
 });
@@ -28,30 +37,14 @@ const createMoviesValidator = celebrate({
     country: Joi.string().required(),
     director: Joi.string().required(),
     duration: Joi.number().required(),
-    year: Joi.number().required(),
+    year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string()
-      .required()
-      .pattern(
-        /^((https?):\/\/)(www.)?[a-z0-9-]+\.[a-z]+[a-z0-9/\-._~:%?#[\]@!$&='()*+,;]+#?$/i,
-      ),
-    trailerLink: Joi.string()
-      .required()
-      .pattern(
-        /^((https?):\/\/)(www.)?[a-z0-9-]+\.[a-z]+[a-z0-9/\-._~:%?#[\]@!$&='()*+,;]+#?$/i,
-      ),
-    nameRU: Joi.string()
-      .required()
-      .pattern(/^[?!,.а-яА-ЯёЁ0-9\s]+$/),
-    nameEN: Joi.string()
-      .required()
-      .pattern(/^[?!,.A-Za-z0-9\s]+$/),
-    thumbnail: Joi.string()
-      .required()
-      .pattern(
-        /^((https?):\/\/)(www.)?[a-z0-9-]+\.[a-z]+[a-z0-9/\-._~:%?#[\]@!$&='()*+,;]+#?$/i,
-      ),
+    image: Joi.string().custom(urlValidator).required(),
+    trailerLink: Joi.string().custom(urlValidator).required(),
+    thumbnail: Joi.string().custom(urlValidator).required(),
     movieId: Joi.number().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 });
 

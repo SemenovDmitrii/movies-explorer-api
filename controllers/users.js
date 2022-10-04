@@ -4,6 +4,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
+const { JWT_KEY_SECRET } = require('../utils/config');
 const {
   userNotFoundError,
   failedUpdateData,
@@ -33,7 +34,9 @@ module.exports.updateCurrentUser = (req, res, next) => {
     .orFail(() => next(new NotFoundError(failedUpdateData)))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.code === 11000) {
+        next(new ConflictError(emailErrorMessages));
+      } else if (err.name === 'ValidationError') {
         next(new BadRequestError(errorUpdateUser));
       } else {
         next(err);
@@ -74,7 +77,7 @@ module.exports.login = (req, res, next) => {
         { _id: user._id },
         process.env.NODE_ENV === 'production'
           ? process.env.JWT_SECRET
-          : 'dev-secret',
+          : JWT_KEY_SECRET,
         { expiresIn: '7d' },
       );
       res.send({ token });
