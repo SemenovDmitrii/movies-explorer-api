@@ -1,7 +1,7 @@
 const domainCors = {
   origin: [
-    'http://api.sdv.nomoredomains.sbs',
-    'https://api.sdv.nomoredomains.sbs',
+    'http://api.sdv.nomoredomains.icu',
+    'https://api.sdv.nomoredomains.icu',
     'http://localhost:3000',
     'http://localhost:3001',
   ],
